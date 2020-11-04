@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.binary_winters.employees_testing.shared.GenericResponse;
+
 @RestController
 public class DepartmentController {
 	
@@ -24,8 +26,10 @@ public class DepartmentController {
 	}
 	
 	@GetMapping("/departments/assign-plus")
-	public void assignPlus() {
-		departmentService.assignPlusToEmployees();
+	public GenericResponse assignPlus() {
+		String plusMessage = departmentService.assignPlusToEmployees();
+
+		return new GenericResponse(plusMessage);
 	}
 
 

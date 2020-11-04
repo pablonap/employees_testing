@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.binary_winters.employees_testing.employee.EmployeeRepository;
@@ -19,6 +20,12 @@ public class DepartmentService {
 
 	private DepartmentRepository departmentRepository;
 	private EmployeeRepository employeeRepository;
+	
+	@Value("${plus_message_added_successfully}")
+	private String successfullMessage;
+
+	@Value("${plus_message_added_unsuccessfully}")
+	private String unsuccessfullMessage;
 
 	@Autowired
 	public DepartmentService(DepartmentRepository departmentRepository, EmployeeRepository employeeRepository) {
@@ -35,7 +42,9 @@ public class DepartmentService {
 		return departmentRepository.findAll();
 	}
 
-	public void assignPlusToEmployees() {
+	public String assignPlusToEmployees() {
+		
+		String plusMessage = unsuccessfullMessage;
 
 		List<Department> departments = this.getAllDepartment();
 
@@ -54,9 +63,13 @@ public class DepartmentService {
 
 				if (departmentsWithHighestSale.size() > 0) {
 					this.assignPlus(departmentsWithHighestSale);
+					
+					plusMessage = successfullMessage;
 				}
-			}
+			} 
 		}
+		
+		return plusMessage;
 	}
 
 	private int findHighestSale(List<Department> departments) {
