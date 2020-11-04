@@ -1,11 +1,12 @@
 package com.binary_winters.employees_testing.department;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.binary_winters.employees_testing.employee.Employee;
 import com.binary_winters.employees_testing.employee.EmployeeRepository;
 import com.binary_winters.employees_testing.employee.JobCode;
 
@@ -36,38 +37,50 @@ public class DepartmentService {
 	}
 	
 	public void assignPlusToEmployees() {
+
 		List<Department> departments = this.getAllDepartment();
 		
-		Department departmentWithMoreSales = null;
-		int maxSales = 0;
+		int highestSale = this.findHighestSale(departments);
+		
+		Set<Department> departmentsWithHighestSale = new HashSet<>();
 		
 		for (Department tempDepartment : departments) {
+			if (tempDepartment.getSales() == highestSale) {
+				departmentsWithHighestSale.add(tempDepartment);
+			}
+		}
+
+		if (departmentsWithHighestSale.size() > 0) {
+			this.assignPlus(departmentsWithHighestSale);
+		}
+		
+	}
+	
+	private int findHighestSale(List<Department> departments) {
+
+		int maxSales = 0;
+
+		for (Department tempDepartment : departments) {
 			if (tempDepartment.getSales() > maxSales ) {
-				departmentWithMoreSales = tempDepartment;
 				maxSales = tempDepartment.getSales();
 			}
 		}
 		
-		if (departmentWithMoreSales != null) {
-			this.assignPlus(departmentWithMoreSales);
-		}
-		
+		return maxSales;
 	}
 
-	private void assignPlus(Department departmentWithMoreSales) {
-		List<Employee> employees = departmentWithMoreSales.getEmployees();
+	private void assignPlus(Set<Department> departmentsWithHighestSale) {
 		
-		for (Employee tempEmployee : employees) {
-			
-			if (tempEmployee.getJobCode().equalsIgnoreCase(JobCode.MNG.toString()) 
-					|| tempEmployee.getSalary() >= TOP_SALARY ) {
-				tempEmployee.setSalary(tempEmployee.getSalary() + MIN_PLUS);
+		departmentsWithHighestSale.forEach(department -> department.getEmployees().stream().forEach(employee -> {
+			if (employee.getJobCode().equalsIgnoreCase(JobCode.MNG.toString()) 
+					|| employee.getSalary() >= TOP_SALARY ) {
+				employee.setSalary(employee.getSalary() + MIN_PLUS);
 			} else {
-				tempEmployee.setSalary(tempEmployee.getSalary() + MAX_PLUS);
+				employee.setSalary(employee.getSalary() + MAX_PLUS);
 			}
 			
-			employeeRepository.save(tempEmployee);
-		}
+			employeeRepository.save(employee);
+		}));
 		
 	}
 	
