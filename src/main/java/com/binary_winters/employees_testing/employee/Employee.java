@@ -24,5 +24,7 @@ public class Employee {
 	private String jobCode;
 	
 	private Double salary;
+	
+	private Double plus;
 
 }

@@ -74,9 +74,9 @@ public class DepartmentService {
 		departmentsWithHighestSale.forEach(department -> department.getEmployees().stream().forEach(employee -> {
 			if (employee.getJobCode().equalsIgnoreCase(JobCode.MNG.toString()) 
 					|| employee.getSalary() >= TOP_SALARY ) {
-				employee.setSalary(employee.getSalary() + MIN_PLUS);
+				employee.setPlus(MIN_PLUS);
 			} else {
-				employee.setSalary(employee.getSalary() + MAX_PLUS);
+				employee.setPlus(MAX_PLUS);
 			}
 			
 			employeeRepository.save(employee);
