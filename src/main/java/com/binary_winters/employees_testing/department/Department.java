@@ -1,4 +1,4 @@
-package com.binary_winters.employees_testing.employee;
+package com.binary_winters.employees_testing.department;
 
 import java.util.List;
 
@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.binary_winters.employees_testing.employee.Employee;
 
 import lombok.Data;
 
