@@ -27,7 +27,7 @@ public class Department {
 	
 	private Integer sales;
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="department_id")
 	private List<Employee> employees;
 
