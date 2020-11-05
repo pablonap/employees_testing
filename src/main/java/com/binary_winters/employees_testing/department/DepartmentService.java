@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +27,11 @@ public class DepartmentService {
 	@Value("${plus_message_added_unsuccessfully}")
 	private String unsuccessfullMessage;
 
+	@Autowired
 	public DepartmentService(DepartmentRepository departmentRepository, EmployeeRepository employeeRepository) {
 		super();
 		this.departmentRepository = departmentRepository;
 		this.employeeRepository = employeeRepository;
-	}
-
-	public DepartmentService(DepartmentRepository departmentRepository) {
-		super();
-		this.departmentRepository = departmentRepository;
 	}
 
 	public Department getDepartmentById(long id) {

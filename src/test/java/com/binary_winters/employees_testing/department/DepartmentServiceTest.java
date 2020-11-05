@@ -45,12 +45,14 @@ class DepartmentServiceTest {
 	public void assignPlusToEmployees_whenThereAreThreeDepartmentsWithZeroSalesEach_returnUnsuccessfullMessage() {
 		
 		DepartmentRepository departmentRepositoryMock = mock(DepartmentRepository.class);
+
+		EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
 		
 		List<Department> departments = TestUtilDepartment.createDepartmentsWithEmployees(0, 0, 0);
 
 		given(departmentRepositoryMock.findAll()).willReturn(departments);
 
-		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock);
+		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock, employeeRepository);
 
 		ReflectionTestUtils.setField(departmentService, "successfullMessage", "Plus message added successfully.");
 		ReflectionTestUtils.setField(departmentService, "unsuccessfullMessage", "Plus message added unsuccessfully.");
@@ -65,6 +67,8 @@ class DepartmentServiceTest {
 	public void assignPlusToEmployees_whenThereAreThreeDepartmentsWithNoEmployees_returnUnsuccessfullMessage() {
 		
 		DepartmentRepository departmentRepositoryMock = mock(DepartmentRepository.class);
+
+		EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
 		
 		List<Department> departments = TestUtilDepartment.createDepartmentsWithEmployees(0, 0, 0);
 		
@@ -72,7 +76,7 @@ class DepartmentServiceTest {
 
 		given(departmentRepositoryMock.findAll()).willReturn(departments);
 
-		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock);
+		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock, employeeRepository);
 
 		ReflectionTestUtils.setField(departmentService, "successfullMessage", "Plus message added successfully.");
 		ReflectionTestUtils.setField(departmentService, "unsuccessfullMessage", "Plus message added unsuccessfully.");
@@ -87,12 +91,14 @@ class DepartmentServiceTest {
 	public void assignPlusToEmployees_whenDepartmentListIsNull_returnUnsuccessfullMessage() {
 		
 		DepartmentRepository departmentRepositoryMock = mock(DepartmentRepository.class);
+
+		EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
 		
 		List<Department> departments = null;
 		
 		given(departmentRepositoryMock.findAll()).willReturn(departments);
 
-		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock);
+		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock, employeeRepository);
 
 		ReflectionTestUtils.setField(departmentService, "successfullMessage", "Plus message added successfully.");
 		ReflectionTestUtils.setField(departmentService, "unsuccessfullMessage", "Plus message added unsuccessfully.");
