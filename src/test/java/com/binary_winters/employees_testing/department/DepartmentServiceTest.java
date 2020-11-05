@@ -57,4 +57,26 @@ class DepartmentServiceTest {
 		 
 	}
 
+	@Test
+	public void assignPlusToEmployees_whenThereAreThreeDepartmentsWithNoEmployees_returnUnsuccessfullMessage() {
+		
+		DepartmentRepository departmentRepositoryMock = mock(DepartmentRepository.class);
+		
+		List<Department> departments = TestUtilDepartment.createDepartmentsWithEmployees(0, 0, 0);
+		
+		departments.stream().forEach(department -> department.getEmployees().clear());
+
+		given(departmentRepositoryMock.findAll()).willReturn(departments);
+
+		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock);
+
+		ReflectionTestUtils.setField(departmentService, "successfullMessage", "Plus message added successfully.");
+		ReflectionTestUtils.setField(departmentService, "unsuccessfullMessage", "Plus message added unsuccessfully.");
+		
+		String response = departmentService.assignPlusToEmployees();
+		
+		Assert.assertEquals(unsuccessfullMessage, response);
+		 
+	}
+
 }
