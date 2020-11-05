@@ -27,11 +27,15 @@ public class DepartmentService {
 	@Value("${plus_message_added_unsuccessfully}")
 	private String unsuccessfullMessage;
 
-	@Autowired
 	public DepartmentService(DepartmentRepository departmentRepository, EmployeeRepository employeeRepository) {
 		super();
 		this.departmentRepository = departmentRepository;
 		this.employeeRepository = employeeRepository;
+	}
+
+	public DepartmentService(DepartmentRepository departmentRepository) {
+		super();
+		this.departmentRepository = departmentRepository;
 	}
 
 	public Department getDepartmentById(long id) {
@@ -62,9 +66,14 @@ public class DepartmentService {
 				}
 
 				if (departmentsWithHighestSale.size() > 0) {
-					this.assignPlus(departmentsWithHighestSale);
 					
-					plusMessage = successfullMessage;
+					if (departmentsWithHighestSale.stream().filter(department -> department.getEmployees() != null && department.getEmployees().size() > 0).count() > 0) {
+						this.assignPlus(departmentsWithHighestSale);
+						
+						plusMessage = successfullMessage;
+						
+					}
+
 				}
 			} 
 		}
@@ -94,7 +103,7 @@ public class DepartmentService {
 				employee.setPlus(MAX_PLUS);
 			}
 
-			employeeRepository.save(employee);
+//			employeeRepository.save(employee);
 		}));
 
 	}

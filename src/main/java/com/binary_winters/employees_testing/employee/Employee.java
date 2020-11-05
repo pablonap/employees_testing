@@ -27,4 +27,16 @@ public class Employee {
 	
 	private Double plus;
 
+	public Employee() {
+		super();
+	}
+
+	public Employee(String name, String jobCode, Double salary, Double plus) {
+		super();
+		this.name = name;
+		this.jobCode = jobCode;
+		this.salary = salary;
+		this.plus = plus;
+	}
+
 }

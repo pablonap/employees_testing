@@ -1,5 +1,6 @@
 package com.binary_winters.employees_testing.department;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -29,6 +30,16 @@ public class Department {
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="department_id")
-	private List<Employee> employees;
+	private List<Employee> employees = new ArrayList<>();
 
+	public Department() {
+		super();
+	}
+
+	public Department(Long id, Integer sales) {
+		super();
+		this.id = id;
+		this.sales = sales;
+	}
+	
 }
