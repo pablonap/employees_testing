@@ -99,4 +99,25 @@ class DepartmentServiceTest {
 		 
 	}
 
+	@Test
+	public void assignPlusToEmployees_whenThereAreThreeDepartmentsAndTheThreeWithHiguestSales_returnSucessMessage() {
+		
+		DepartmentRepository departmentRepositoryMock = mock(DepartmentRepository.class);
+		
+		List<Department> departments = TestUtilDepartment.createDepartmentsWithEmployees(390, 390, 390);
+
+		given(departmentRepositoryMock.findAll()).willReturn(departments);
+
+		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock);
+
+		ReflectionTestUtils.setField(departmentService, "successfullMessage", "Plus message added successfully.");
+		ReflectionTestUtils.setField(departmentService, "unsuccessfullMessage", "Plus message added unsuccessfully.");
+		
+		String response = departmentService.assignPlusToEmployees();
+		
+		Assert.assertEquals(successfullMessage, response);
+		 
+	}
+
+
 }
