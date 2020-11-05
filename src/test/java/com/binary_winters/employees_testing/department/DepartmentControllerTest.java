@@ -1,9 +1,12 @@
 package com.binary_winters.employees_testing.department;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -35,9 +38,28 @@ public class DepartmentControllerTest {
 	@Test
 	public void getDepartment_whenAssignPlusIsInvoked_receiveOk() {
 
-		ResponseEntity<Object> response = testRestTemplate.getForEntity(API_DEPARTMENTS + "/assign-plus", Object.class);
+		ResponseEntity<Object> response = testRestTemplate.getForEntity(API_DEPARTMENTS, Object.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
-	 
+	
+	@Test
+	public void putDepartment_whenThereAreThreeDepartmentsAndTwoWithHiguestSales_dbIsUpdatedWithPlus() {
+		
+		List<Department> departments = TestUtilDepartment.createDepartmentsWithEmployees(150, 390, 390);
+
+		departments.stream().forEach(department -> departmentRepository.save(department));
+
+		testRestTemplate.put(API_DEPARTMENTS + "/assign-plus", null);
+		
+		List<Department> dbDepartments = departmentRepository.findAll();
+		
+		Department firstDepartmentFoundWithHighestSaleRate = dbDepartments.stream()
+				.filter(department -> department.getSales() == 390)
+				.findFirst()
+				.get();
+		
+		assertThat(firstDepartmentFoundWithHighestSaleRate.getEmployees().get(0).getPlus()).isGreaterThan(0);
+	}
+
 }
