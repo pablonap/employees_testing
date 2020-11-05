@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import com.binary_winters.employees_testing.employee.EmployeeRepository;
+
 @RunWith(SpringRunner.class)
 class DepartmentServiceTest {
 	
@@ -22,11 +24,13 @@ class DepartmentServiceTest {
 		
 		DepartmentRepository departmentRepositoryMock = mock(DepartmentRepository.class);
 		
+		EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+
 		List<Department> departments = TestUtilDepartment.createDepartmentsWithEmployees(150, 390, 390);
 
 		given(departmentRepositoryMock.findAll()).willReturn(departments);
 
-		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock);
+		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock, employeeRepository);
 
 		ReflectionTestUtils.setField(departmentService, "successfullMessage", "Plus message added successfully.");
 		ReflectionTestUtils.setField(departmentService, "unsuccessfullMessage", "Plus message added unsuccessfully.");
@@ -103,12 +107,14 @@ class DepartmentServiceTest {
 	public void assignPlusToEmployees_whenThereAreThreeDepartmentsAndTheThreeWithHiguestSales_returnSucessMessage() {
 		
 		DepartmentRepository departmentRepositoryMock = mock(DepartmentRepository.class);
+
+		EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
 		
 		List<Department> departments = TestUtilDepartment.createDepartmentsWithEmployees(390, 390, 390);
 
 		given(departmentRepositoryMock.findAll()).willReturn(departments);
 
-		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock);
+		DepartmentService departmentService = new DepartmentService(departmentRepositoryMock, employeeRepository);
 
 		ReflectionTestUtils.setField(departmentService, "successfullMessage", "Plus message added successfully.");
 		ReflectionTestUtils.setField(departmentService, "unsuccessfullMessage", "Plus message added unsuccessfully.");
